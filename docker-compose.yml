@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  bot:
+    build: .
+    container_name: alina_bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    container_name: alina_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: alina
+      POSTGRES_USER: alina_user
+      POSTGRES_PASSWORD: alina_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
